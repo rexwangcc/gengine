@@ -1,3 +1,4 @@
 # gengine custom
 dataset/
 training/
+__pycache__
