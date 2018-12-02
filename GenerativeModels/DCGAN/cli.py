@@ -122,16 +122,16 @@ def main(options):
             optimizerG.step()
 
             training_status = f"[{epoch}/{options.niter}][{i}/{len(data_loader)}] Loss_D: {errD.item():.4f} Loss_G: " \
-                              f"{errG.item():.4f} D(x): {D_x:.4f} D(G(z)): {(D_G_z1/D_G_z2):.4f}"
+                f"{errG.item():.4f} D(x): {D_x:.4f} D(G(z)): {(D_G_z1/D_G_z2):.4f}"
             print(training_status)
 
             if i % int(options.notefreq) == 0:
                 vutils.save_image(real_cpu,
-                                  f"{options.outf}/real_samples.png",
+                                  f"{options.outf}/real_samples_epoch_{epoch:{0}{3}}_{i}.png",
                                   normalize=True)
                 fake = netG(fixed_noise)
                 vutils.save_image(fake.detach(),
-                                  f"{options.outf}/fake_samples_epoch_{epoch:{0}{3}}.png",
+                                  f"{options.outf}/fake_samples_epoch_{epoch:{0}{3}}_{i}.png",
                                   normalize=True)
 
                 # Save Losses statistics for post-mortem
@@ -146,14 +146,13 @@ def main(options):
                     img_list.append(vutils.make_grid(fake, padding=2, normalize=True))
                 iters += 1
 
-
         # do checkpointing
         torch.save(netG.state_dict(), f"{options.outf}/netG_epoch_{epoch}.pth")
         torch.save(netG.state_dict(), f"{options.outf}/netD_epoch_{epoch}.pth")
 
     # save training stats
     _save_stats(statistic=G_losses, save_name='G_losses', options=options)
-    _save_stats(statistic=D_losses, save_name='G_losses', options=options)
+    _save_stats(statistic=D_losses, save_name='D_losses', options=options)
     _save_stats(statistic=stats, save_name='Training_stats', options=options)
 
 
@@ -179,7 +178,7 @@ def _configure_cuda(options):
     torch.backends.cudnn.benchmark = True
 
     if torch.cuda.is_available():
-        if not (options.disable_cuda or options.ngpu==0):
+        if not (options.disable_cuda or options.ngpu == 0):
             logging.info("Using GPU with CUDA.\n")
             device = torch.device('cuda:0')
             logging.info(f"GPU: {torch.cuda.get_device_name(0)}\n")
@@ -276,7 +275,6 @@ if __name__ == '__main__':
     parser.add_argument('--loglevel', default='info', help='debug | info | warning | error | critical; [default info]')
     parser.add_argument('--notefreq', type=int, default=50, help='The frequency of noting down the traning status, every X iterations. [default 50]')
     cli_options = parser.parse_args()
-
 
     # Create a timestamp-based folder for outputs
     cli_options.outf = f"{str(cli_options.outf).strip('/')}/{datetime.datetime.today().strftime('%Y-%m-%d-%H-%M-%S')}"
