@@ -249,7 +249,7 @@ def _save_stats(statistic, save_name, options):
 
 
 if __name__ == '__main__':
-    """Usage: `python cli.py --dataset='celeba' --dataroot='/Users/chengche/Mint/CodePlayground/MyCodes/Github Projects/gengine/GenerativeModels/dataset/celeba' --niter=50 --outf="./training" --niter=1`"""
+    """Usage: `python cli.py --dataset='celeba' --dataroot='path_to_gengine/GenerativeModels/dataset/celeba' --niter=50 --outf="./training" --niter=1`"""
 
     # Establish the CLI options parser
     parser = argparse.ArgumentParser()
