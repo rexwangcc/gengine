@@ -1,0 +1,4 @@
+# Created by .ignore support plugin (hsz.mobi)
+/GenerativeModels/DCGAN/training/
+/GenerativeModels/dataset/
+.idea/

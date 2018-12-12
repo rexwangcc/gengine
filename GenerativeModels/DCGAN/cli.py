@@ -122,7 +122,7 @@ def main(options):
             optimizerG.step()
 
             training_status = f"[{epoch}/{options.niter}][{i}/{len(data_loader)}] Loss_D: {errD.item():.4f} Loss_G: " \
-                f"{errG.item():.4f} D(x): {D_x:.4f} D(G(z)): {(D_G_z1/D_G_z2):.4f}"
+                f"{errG.item():.4f} D(x): {D_x:.4f} D(G(z)): {D_G_z1:.4f}/{D_G_z2:.4f}"
             print(training_status)
 
             if i % int(options.notefreq) == 0:
